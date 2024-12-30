@@ -7,8 +7,12 @@
 
 - Create react app
 - Configured tailwind css
+- Header
+- Login Form
+- Sign Up Form
 
-# Features 
+
+# Features
 
 - Login/Sign Up
   - Sign In /Sign up Form
