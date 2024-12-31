@@ -1,5 +1,5 @@
 const Browse = () => {
-  return <div></div>;
+  return <div>Browse</div>;
 };
 
 export default Browse;
