@@ -17,7 +17,7 @@ const Login = () => {
   const password = useRef(null);
   // const name = useRef(null);
 
-  // login page 
+
 
   const handleButtonClick = () => {
     const message = checkValidData(email.current.value, password.current.value);
