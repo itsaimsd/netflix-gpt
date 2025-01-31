@@ -4,6 +4,7 @@ import { checkValidData } from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
@@ -11,13 +12,11 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const email = useRef(null);
   const password = useRef(null);
-  // const name = useRef(null);
-
-
+  const name = useRef(null);
 
   const handleButtonClick = () => {
     const message = checkValidData(email.current.value, password.current.value);
@@ -32,10 +31,19 @@ const Login = () => {
         password.current.value
       )
         .then((userCredential) => {
-          // Signed up Form
           const user = userCredential.user;
-          console.log(user);
-          Navigate("/browse");
+
+          updateProfile(user, {
+            displayName: name.current ? name.current.value : "User",
+            photoURL:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr66GVFf8cEx3hzFXl_dtYkN28HaKVUaA_RQ&s",
+          })
+            .then(() => {
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -43,17 +51,15 @@ const Login = () => {
           setErrorMessage(errorCode + "-" + errorMessage);
         });
     } else {
-      // Sign In
       signInWithEmailAndPassword(
         auth,
         email.current.value,
         password.current.value
       )
         .then((userCredential) => {
-          // Signed in
           const user = userCredential.user;
           console.log(user);
-          Navigate("/browse");
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -66,6 +72,7 @@ const Login = () => {
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
   };
+// Sign Up form
 
   return (
     <div>
